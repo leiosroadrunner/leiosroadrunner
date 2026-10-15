@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leios Roadrunner ($MEEP) | Cardano's Fastest Meme Token</title>
+
+    <meta name="description" content="Outrunning congestion at the speed of Leios. $MEEP is Cardano's high-speed meme token celebrating the Ouroboros Leios upgrade, fair launched on snek.fun with 0% tax.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        snekdark: { 950: '#03050a', 900: '#070b14', 800: '#0f172a', 700: '#1e293b' },
+                        crimson: { 500: '#ef4444', 600: '#e63946' },
+                        gold: { 400: '#fbbf24', 500: '#f59e0b' },
+                        cyan: { 400: '#22d3ee', 500: '#06b6d4' }
+                    },
+                    fontFamily: { sans: ['Outfit', 'sans-serif'], mono: ['Space Grotesk', 'monospace'] },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'glow-pulse': 'glowPulse 3s infinite alternate',
+                    },
+                    keyframes: {
+                        float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-12px)' } },
+                        glowPulse: { '0%': { opacity: '0.4' }, '100%': { opacity: '0.8' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #03050a; color: #f3f4f6; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        
+        .bento-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(7, 11, 20, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.1), transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .bento-card:hover {
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(34, 211, 238, 0.18);
+            transform: translateY(-4px);
+        }
+        .bento-card:hover::before { opacity: 1; }
+
+        .glass-nav { background: rgba(3, 5, 10, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+        .text-gradient-meep {
+            background: linear-gradient(135deg, #e63946 0%, #f59e0b 45%, #22d3ee 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #03050a; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #22d3ee; }
+
+        #sprintTrack { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 999; overflow: hidden; }
+        .runner-bird { position: absolute; transition: transform 0.05s linear; }
+    </style>
+</head>
+<body class="selection:bg-cyan-500 selection:text-black">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-nav px-4 lg:px-8 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-400 via-gold-500 to-crimson-600 p-0.5 shadow-lg shadow-cyan-500/25 group-hover:scale-105 transition-transform overflow-hidden">
+                    <div class="w-full h-full bg-snekdark-950 rounded-[14px] flex items-center justify-center p-1">
+                        <img src="meep-logo.png" alt="MEEP" class="w-full h-full object-contain">
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
+                        LEIOS ROADRUNNER
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 font-mono">$MEEP</span>
+                    </span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#bento-hub" class="hover:text-cyan-400 transition-colors">Ecosystem</a>
+                <a href="#tokenomics" class="hover:text-cyan-400 transition-colors">Tokenomics</a>
+                <a href="#flight-plan" class="hover:text-cyan-400 transition-colors">Flight Plan</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="https://x.com/leiosroadrunner" target="_blank" class="w-9 h-9 rounded-xl bento-card flex items-center justify-center text-white hover:text-cyan-400 transition-colors" title="Official X">
+                    <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+                <a href="https://discord.com/invite/jNyW3NabHD" target="_blank" class="w-9 h-9 rounded-xl bento-card flex items-center justify-center text-white hover:text-gold-400 transition-colors" title="Official Discord">
+                    <i class="fa-brands fa-discord text-white text-base"></i>
+                </a>
+                <a href="https://www.snek.fun/token/2420237868d5c229c69592ed4282d17aa514bbbcac5d02bc0588e4884c65696f7320526f616472756e6e6572" target="_blank" class="px-4 py-2 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-cyan-400 via-gold-500 to-crimson-600 text-snekdark-950 shadow-lg shadow-cyan-500/30 hover:scale-105 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-rocket"></i>
+                    <span>Buy on snek.fun</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Live Ticker Bar -->
+    <div class="w-full bg-snekdark-900 border-b border-white/5 pt-20 pb-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-xs font-mono text-gray-400 gap-4">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <span class="text-white font-bold">Network Era:</span> Ouroboros Leios Scalability ⚡
+            </div>
+            <div class="flex items-center gap-6">
+                <span>Tax: <strong class="text-emerald-400">0% Buy / Sell</strong></span>
+                <span>Supply: <strong class="text-cyan-400">1,000,000,000</strong></span>
+                <span class="hidden sm:inline">Launch: <strong class="text-gold-400">100% Fair on snek.fun</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="sprintTrack"></div>
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Contemporary Hero Command Center -->
+    <section class="relative pt-20 pb-16 px-4 overflow-hidden">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-cyan-500/15 rounded-full blur-[160px] pointer-events-none animate-glow-pulse"></div>
+        <div class="absolute top-1/3 right-10 w-[400px] h-[400px] bg-crimson-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10 space-y-8">
+            <div class="w-36 h-36 sm:w-44 sm:h-44 mx-auto p-4 bento-card rounded-3xl shadow-2xl relative group animate-float">
+                <div class="absolute inset-0 bg-gradient-to-tr from-cyan-400 via-gold-500 to-crimson-600 rounded-3xl blur-2xl opacity-50 group-hover:opacity-90 transition-opacity"></div>
+                <img src="meep-logo.png" alt="MEEP Logo" class="w-full h-full object-contain relative z-10 group-hover:scale-105 transition-transform">
+            </div>
+
+            <div class="space-y-3">
+                <span class="px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-xs font-mono text-cyan-400 uppercase font-bold tracking-widest shadow-lg">
+                    Cardano's Fastest Culture Token
+                </span>
+                <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight">
+                    <span class="block text-white">LEIOS</span>
+                    <span class="text-gradient-meep">ROADRUNNER</span>
+                </h1>
+                <p class="text-lg sm:text-2xl text-gray-300 max-w-xl mx-auto font-light leading-relaxed">
+                    "Outrunning congestion at the speed of Leios."
+                </p>
+            </div>
+
+            <!-- Interactive Sprint Trigger -->
+            <div class="pt-2">
+                <button onclick="triggerMeepSprint()" class="px-9 py-4.5 rounded-full bg-gradient-to-r from-snekdark-800 via-snekdark-700 to-snekdark-800 border-2 border-cyan-400/50 hover:border-cyan-400 text-white font-bold text-base shadow-2xl shadow-cyan-500/20 flex items-center gap-3 mx-auto transition-all active:scale-95 cursor-pointer group">
+                    <i class="fa-solid fa-bolt text-gold-400 group-hover:scale-125 transition-transform"></i>
+                    <span>CLICK TO RUN: "MEEP MEEP!" ⚡</span>
+                </button>
+                <div class="text-xs font-mono text-gray-400 mt-3">Sprint Streak: <span id="streakVal" class="text-cyan-400 font-bold">0</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Grid Ecosystem Hub -->
+    <section id="bento-hub" class="py-12 px-4 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Bento Box 1: Policy ID & Quick Copy -->
+            <div class="bento-card rounded-3xl p-6 sm:p-8 space-y-4 md:col-span-2 flex flex-col justify-between">
+                <div>
+                    <div class="text-xs font-mono text-cyan-400 uppercase font-bold tracking-wider mb-1">Official Asset Verification</div>
+                    <h3 class="text-2xl font-extrabold text-white">Cardano Verified Token</h3>
+                    <p class="text-sm text-gray-400 mt-2 leading-relaxed">
+                        Fair launched on snek.fun with zero founder allocation. Secure your bags using the official verified policy ID across all Cardano wallets and DEXs.
+                    </p>
+                </div>
+                <div class="bg-snekdark-950 p-4 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-inner">
+                    <span id="FullAssetIDText" class="text-xs font-mono text-gray-300 truncate w-full sm:w-auto">2420237868d5c229c69592ed4282d17aa514bbbcac5d02bc0588e4884c65696f7320526f616472756e6e6572</span>
+                    <button onclick="copyFullAssetID()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-cyan-500 text-snekdark-950 text-xs font-mono font-bold hover:scale-105 transition-all shrink-0 w-full sm:w-auto shadow-md">
+                        <span id="copyBtnLabel">Copy Policy ID</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bento Box 2: Official Social Portals -->
+            <div class="bento-card rounded-3xl p-6 sm:p-8 space-y-4 flex flex-col justify-between">
+                <div>
+                    <div class="text-xs font-mono text-gold-400 uppercase font-bold tracking-wider mb-1">Community Hubs</div>
+                    <h3 class="text-2xl font-extrabold text-white">Join the Pack</h3>
+                    <p class="text-sm text-gray-400 mt-2">
+                        Connect on X and verify your holder role in our Discord community lounge.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-3 pt-4">
+                    <!-- Bento Grid X Button with strictly SVG logo only -->
+                    <a href="https://x.com/leiosroadrunner" target="_blank" class="py-3 px-4 rounded-xl bg-snekdark-900 border border-white/10 text-center text-white font-bold text-sm hover:border-cyan-400 hover:bg-cyan-500/10 transition-all flex items-center justify-center gap-2" title="Official X">
+                        <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                    <a href="https://discord.com/invite/jNyW3NabHD" target="_blank" class="py-3 px-4 rounded-xl bg-snekdark-900 border border-white/10 text-center text-white font-bold text-sm hover:border-gold-400 hover:bg-gold-500/10 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-discord text-gold-400"></i> Discord
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bento Box 3: Swap Calculator -->
+            <div id="tokenomics" class="bento-card rounded-3xl p-6 sm:p-8 space-y-6 md:col-span-2">
+                <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                    <h3 class="font-extrabold text-lg text-white flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-cyan-400"></i>
+                        <span>Simulated Swap Calculator</span>
+                    </h3>
+                    <span class="text-xs font-mono text-gray-400">1 ADA ≈ 323,914 $MEEP</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-mono text-gray-400">You Pay (ADA)</label>
+                        <input id="adaInput" type="number" value="50" oninput="updateCalc()" class="w-full bg-snekdark-950 border border-white/10 rounded-xl px-4 py-3 font-mono text-white text-base focus:outline-none focus:border-cyan-400 transition-colors">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-mono text-gray-400">Estimated $MEEP</label>
+                        <input id="meepOutput" type="text" readonly value="16,195,700" class="w-full bg-snekdark-950 border border-white/10 rounded-xl px-4 py-3 font-mono text-cyan-400 font-bold text-base focus:outline-none">
+                    </div>
+                </div>
+                <a href="https://www.snek.fun/token/2420237868d5c229c69592ed4282d17aa514bbbcac5d02bc0588e4884c65696f7320526f616472756e6e6572" target="_blank" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 via-gold-500 to-crimson-600 font-bold text-snekdark-950 text-center block shadow-lg hover:scale-[1.01] active:scale-95 transition-all">
+                    Execute on snek.fun
+                </a>
+            </div>
+
+            <!-- Bento Box 4: Key Tokenomics Stats -->
+            <div class="bento-card rounded-3xl p-6 sm:p-8 space-y-4 flex flex-col justify-between">
+                <div class="text-xs font-mono text-emerald-400 uppercase font-bold tracking-wider">Clean Tokenomics</div>
+                <div class="space-y-3.5">
+                    <div class="flex justify-between text-sm border-b border-white/5 pb-2.5">
+                        <span class="text-gray-400">Total Supply</span>
+                        <span class="font-mono font-bold text-white">1B MEEP</span>
+                    </div>
+                    <div class="flex justify-between text-sm border-b border-white/5 pb-2.5">
+                        <span class="text-gray-400">Transaction Tax</span>
+                        <span class="font-mono font-bold text-emerald-400">0%</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Team Reserve</span>
+                        <span class="font-mono font-bold text-cyan-400">0%</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Operational Flight Plan Roadmap (4 Phases) -->
+    <section id="flight-plan" class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center space-y-3 mb-12">
+            <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Operational Roadmap</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Flight Plan</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Phase 1 -->
+            <div class="bento-card rounded-3xl p-6 space-y-4 border-t-4 border-t-cyan-400 flex flex-col justify-between">
+                <div class="space-y-3">
+                    <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 text-[10px] font-mono font-bold">PHASE 1 • FOUNDATION</span>
+                    <h3 class="text-lg font-bold text-white">Launch & Setup</h3>
+                    <ul class="text-xs text-gray-400 space-y-2 font-light leading-relaxed">
+                        <li>• Token creation & snek.fun buy-in <strong class="text-emerald-400">[DONE]</strong></li>
+                        <li>• Website & domain deployment <strong class="text-emerald-400">[DONE]</strong></li>
+                        <li>• Discord setup & VibrantNet holder verification <strong class="text-emerald-400">[DONE]</strong></li>
+                        <li>• Wick bot security setup <strong class="text-emerald-400">[DONE]</strong></li>
+                        <li>• BuiltOnCardano directory listing <strong class="text-emerald-400">[DONE]</strong></li>
+                        <li>• X account setup <strong class="text-emerald-400">[DONE]</strong></li>
+                        <li>• X account Verified Badge & content seeding <strong class="text-amber-400">[Upcoming]</strong></li>
+                    </ul>
+                </div>
+                <div class="text-[10px] text-cyan-400 font-mono pt-2 border-t border-white/5">Status: Operational</div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="bento-card rounded-3xl p-6 space-y-4 border-t-4 border-t-gold-500 flex flex-col justify-between">
+                <div class="space-y-3">
+                    <span class="px-2 py-0.5 rounded bg-gold-500/20 text-gold-400 text-[10px] font-mono font-bold">PHASE 2 • GRADUATION</span>
+                    <h3 class="text-lg font-bold text-white">Bonding & SplashDex</h3>
+                    <ul class="text-xs text-gray-400 space-y-2 font-light leading-relaxed">
+                        <li>• Bonding curve volume push & completion</li>
+                        <li>• SplashDex listing integration</li>
+                        <li>• Automatic snek.fun LP burn upon 75% total supply sale completion</li>
+                        <li>• Metadata submissions (DexHunter, CardanoCube) <strong class="text-amber-400">[SUBMITTED]</strong></li>
+                        <li>• CoinGecko & CoinMarketCap tracking apps</li>
+                    </ul>
+                </div>
+                <div class="text-[10px] text-gold-400 font-mono pt-2 border-t border-white/5">Status: In Progress</div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="bento-card rounded-3xl p-6 space-y-4 border-t-4 border-t-emerald-400 flex flex-col justify-between">
+                <div class="space-y-3">
+                    <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-mono font-bold">PHASE 3 • EXPANSION</span>
+                    <h3 class="text-lg font-bold text-white">Sequential DEX Migration</h3>
+                    <ul class="text-xs text-gray-400 space-y-2 font-light leading-relaxed">
+                        <li>• One-by-one DEX liquidity migration & LP locking</li>
+                        <li>• 1. Minswap</li>
+                        <li>• 2. WingRiders</li>
+                        <li>• 3. SundaeSwap</li>
+                        <li>• 4. Upcoming Gravity DEX</li>
+                        <li>• Raid squad & creator partnerships</li>
+                    </ul>
+                </div>
+                <div class="text-[10px] text-emerald-400 font-mono pt-2 border-t border-white/5">Status: Strategic Next</div>
+            </div>
+
+            <!-- Phase 4 -->
+            <div class="bento-card rounded-3xl p-6 space-y-4 border-t-4 border-t-crimson-600 flex flex-col justify-between">
+                <div class="space-y-3">
+                    <span class="px-2 py-0.5 rounded bg-crimson-500/20 text-crimson-500 text-[10px] font-mono font-bold">PHASE 4 • SUSTAINABILITY</span>
+                    <h3 class="text-lg font-bold text-white">CEX & Tokenomics</h3>
+                    <ul class="text-xs text-gray-400 space-y-2 font-light leading-relaxed">
+                        <li>• Strategic Centralized Exchange (CEX) listings</li>
+                        <li>• 100% LP fee burn (MEEP portion) to systematically reduce supply</li>
+                        <li>• ADA/Stablecoin treasury buybacks for LP growth and price stability</li>
+                        <li>• Community governance & long-term utility scaling</li>
+                    </ul>
+                </div>
+                <div class="text-[10px] text-crimson-400 font-mono pt-2 border-t border-white/5">Status: Long-Term Horizon</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-snekdark-950 border-t border-white/10 py-12 px-4 mt-16">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-400 to-crimson-600 p-0.5 overflow-hidden">
+                    <div class="w-full h-full bg-snekdark-950 rounded-[10px] flex items-center justify-center p-1">
+                        <img src="meep-logo.png" alt="Logo" class="w-full h-full object-contain">
+                    </div>
+                </div>
+                <div>
+                    <div class="font-extrabold text-white text-sm">LEIOS ROADRUNNER ($MEEP)</div>
+                    <div class="text-xs text-gray-500 font-mono">Cardano High-Speed Meme Token</div>
+                </div>
+            </div>
+
+            <!-- Footer X and Discord Logos -->
+            <div class="flex items-center gap-4">
+                <a href="https://x.com/leiosroadrunner" target="_blank" class="w-10 h-10 rounded-xl bento-card flex items-center justify-center text-white hover:text-cyan-400 transition-colors" title="Official X">
+                    <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+                <a href="https://discord.com/invite/jNyW3NabHD" target="_blank" class="w-10 h-10 rounded-xl bento-card flex items-center justify-center text-white hover:text-gold-400 transition-colors" title="Official Discord">
+                    <i class="fa-brands fa-discord text-white text-base"></i>
+                </a>
+            </div>
+
+            <div class="text-xs text-gray-500 font-mono space-y-1">
+                <p>Disclaimer: $MEEP is a community meme token. DYOR.</p>
+                <p>© 2026 Leios Roadrunner. Powered by Cardano eUTXO.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        function copyFullAssetID() {
+            navigator.clipboard.writeText(document.getElementById('FullAssetIDText').innerText.trim());
+            const btn = document.getElementById('copyBtnLabel');
+            btn.innerText = "Copied!";
+            setTimeout(() => btn.innerText = "Copy Policy ID", 2000);
+        }
+
+        let streak = 0;
+        function triggerMeepSprint() {
+            streak++;
+            document.getElementById('streakVal').innerText = streak;
+            const track = document.getElementById('sprintTrack');
+            const runner = document.createElement('div');
+            runner.className = 'runner-bird';
+            const startY = Math.random() * (window.innerHeight - 200) + 100;
+            runner.style.top = `${startY}px`;
+            runner.style.left = `-180px`;
+            runner.innerHTML = `
+                <div class="flex items-center gap-2 bg-gradient-to-r from-cyan-400 via-gold-500 to-crimson-600 p-2 rounded-full shadow-2xl border border-white/20">
+                    <img src="meep-logo.png" class="w-8 h-8 rounded-full bg-snekdark-950 p-1">
+                    <span class="font-bold font-mono text-snekdark-950 text-xs pr-2">MEEP MEEP!</span>
+                </div>
+            `;
+            track.appendChild(runner);
+            let posX = -180;
+            const interval = setInterval(() => {
+                posX += 35;
+                runner.style.transform = `translateX(${posX}px)`;
+                if (posX > window.innerWidth + 200) { clearInterval(interval); runner.remove(); }
+            }, 16);
+        }
+
+        function updateCalc() {
+            const ada = parseFloat(document.getElementById('adaInput').value) || 0;
+            document.getElementById('meepOutput').value = (ada * 323914).toLocaleString();
+        }
+    </script>
+</body>
+</html>
