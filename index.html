@@ -156,9 +156,18 @@
             </div>
 
             <div class="space-y-3">
-                <span class="px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-xs font-mono text-cyan-400 uppercase font-bold tracking-widest shadow-lg">
-                    Cardano's Fastest Culture Token
-                </span>
+                <!-- Live Token Holder Counter Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-xs font-mono shadow-lg mb-2">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span>HOLDERS:</span>
+                    <span id="holderCount" class="font-bold text-white">Loading...</span>
+                </div>
+
+                <div>
+                    <span class="px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-xs font-mono text-cyan-400 uppercase font-bold tracking-widest shadow-lg">
+                        Cardano's Fastest Culture Token
+                    </span>
+                </div>
                 <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight">
                     <span class="block text-white">LEIOS</span>
                     <span class="text-gradient-meep">ROADRUNNER</span>
@@ -358,7 +367,7 @@
                 </div>
             </div>
 
-            <!-- Footer Social Links (X, GitHub, Discord) -->
+            <!-- Footer Social Links -->
             <div class="flex items-center gap-4">
                 <a href="https://x.com/leiosroadrunner" target="_blank" class="w-10 h-10 rounded-xl bento-card flex items-center justify-center text-white hover:text-cyan-400 transition-colors" title="Official X">
                     <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" aria-hidden="true">
@@ -418,6 +427,23 @@
             const ada = parseFloat(document.getElementById('adaInput').value) || 0;
             document.getElementById('meepOutput').value = (ada * 323914).toLocaleString();
         }
+
+        // Fetch live project stats from Netlify serverless function on page load
+        async function loadLiveProjectStats() {
+            try {
+                const response = await fetch('/.netlify/functions/get-stats');
+                const stats = await response.json();
+                
+                const holderEl = document.getElementById('holderCount');
+                if (holderEl && stats.holders) {
+                    holderEl.innerText = stats.holders;
+                }
+            } catch (err) {
+                console.log("Using default statistic view.");
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadLiveProjectStats);
     </script>
 </body>
 </html>
