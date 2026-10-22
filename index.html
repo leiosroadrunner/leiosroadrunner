@@ -14,6 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Chart.js & Confetti for Interactive Tokenomics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -103,6 +107,7 @@
             <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
                 <a href="#bento-hub" class="hover:text-cyan-400 transition-colors">Ecosystem</a>
                 <a href="#tokenomics" class="hover:text-cyan-400 transition-colors">Tokenomics</a>
+                <a href="#telemetry" class="hover:text-cyan-400 transition-colors">Telemetry</a>
                 <a href="#flight-plan" class="hover:text-cyan-400 transition-colors">Flight Plan</a>
             </div>
 
@@ -126,17 +131,23 @@
         </div>
     </nav>
 
-    <!-- Live Ticker Bar -->
-    <div class="w-full bg-snekdark-900 border-b border-white/5 pt-20 pb-2 px-4">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between text-xs font-mono text-gray-400 gap-4">
-            <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                <span class="text-white font-bold">Network Era:</span> Ouroboros Leios Scalability ⚡
+    <!-- Live Network Ticker Bar & Activity Feed -->
+    <div class="w-full bg-snekdark-900 border-b border-white/5 pt-20 pb-3 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between text-xs font-mono text-gray-400 gap-3">
+            <div class="flex items-center gap-3">
+                <span class="flex h-2.5 w-2.5 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span class="text-white font-bold">Live On-Chain Ticker:</span> 
+                <div id="meepRecentTxFeed" class="flex items-center gap-2 overflow-x-auto max-w-xl py-0.5">
+                    <span class="text-gray-500">Syncing Cardano mainnet feed...</span>
+                </div>
             </div>
             <div class="flex items-center gap-6">
+                <span>Total Txs: <strong id="meepLiveTotalTx" class="text-amber-400">142</strong></span>
                 <span>Tax: <strong class="text-emerald-400">0% Buy / Sell</strong></span>
                 <span>Supply: <strong class="text-cyan-400">1,000,000,000</strong></span>
-                <span class="hidden sm:inline">Launch: <strong class="text-gold-400">100% Fair on snek.fun</strong></span>
             </div>
         </div>
     </div>
@@ -145,7 +156,7 @@
     <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- Contemporary Hero Command Center -->
-    <section class="relative pt-20 pb-16 px-4 overflow-hidden">
+    <section class="relative pt-16 pb-16 px-4 overflow-hidden">
         <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-cyan-500/15 rounded-full blur-[160px] pointer-events-none animate-glow-pulse"></div>
         <div class="absolute top-1/3 right-10 w-[400px] h-[400px] bg-crimson-600/10 rounded-full blur-[140px] pointer-events-none"></div>
 
@@ -276,6 +287,92 @@
         </div>
     </section>
 
+    <!-- Verified Telemetry & Tokenomics Dashboard Section -->
+    <section id="telemetry" class="py-12 px-4 max-w-7xl mx-auto space-y-8">
+        <div class="text-center space-y-3">
+            <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">On-Chain Transparency</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Supply & Holder Distribution</h2>
+            <p class="text-sm text-gray-400 max-w-2xl mx-auto">Verified smart contract pools, mainnet creator vaults, and holder concentration breakdown.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Chart Visualizer Card -->
+            <div class="bento-card p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-extrabold text-white">Allocation Visualizer</h3>
+                    <p class="text-xs text-gray-400 mt-1">Live distribution share across pool and creator wallets.</p>
+                </div>
+                <div class="relative w-48 h-48 mx-auto my-4">
+                    <canvas id="meepSupplyChart"></canvas>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-4 border-t border-white/10 text-gray-300">
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Curve: 87.55%</div>
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span> LACE: 3.53%</div>
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-orange-400"></span> Turbo: 0.57%</div>
+                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> Other: 8.35%</div>
+                </div>
+            </div>
+
+            <!-- Verified Address Ledger Table -->
+            <div class="bento-card lg:col-span-2 p-6 sm:p-8 rounded-3xl space-y-4 overflow-hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-lg font-extrabold text-white">Verified Mainnet Ledger</h3>
+                        <p class="text-xs text-gray-400">Direct on-chain links to Cardano explorer.</p>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
+                        <i class="fa-solid fa-check-circle"></i> Mainnet Addresses Linked
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead class="bg-snekdark-950/80 text-gray-400 uppercase font-bold">
+                            <tr>
+                                <th class="p-3">Category / Entity</th>
+                                <th class="p-3">Cardano Address</th>
+                                <th class="p-3 text-right">Balance</th>
+                                <th class="p-3 text-right">% Supply</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 text-gray-300">
+                            <tr>
+                                <td class="p-3 font-bold text-white">Bonding-Curve Pool</td>
+                                <td class="p-3">
+                                    <a href="https://cardanoscan.io/address/addr1xxg94wrfjcdsjncmsxtj0r87zk69e0jfl28n934sznu95tdj764lvrxdayh2ux30fl0ktuh27csgmpevdu89jlxppvrs2993lw" target="_blank" class="text-cyan-400 hover:underline truncate block max-w-[180px]">addr1xxg94...gmpevdu89</a>
+                                </td>
+                                <td class="p-3 text-right text-cyan-400 font-bold">875.54M</td>
+                                <td class="p-3 text-right">87.55%</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-white">Creator Wallet #2 (LACE)</td>
+                                <td class="p-3">
+                                    <a href="https://cardanoscan.io/address/addr1qx84qzmwnh2fdhrnaha9g40vqvucauk2wya7dpgj9clr24jmfdmkddwwqmdjnu89mw6s5fc0yfxnc2ejjxkwlz499qdqpqjz8k" target="_blank" class="text-purple-300 hover:underline truncate block max-w-[180px]">addr1qx84qz...qpqjz8k</a>
+                                </td>
+                                <td class="p-3 text-right text-purple-300 font-bold">35.31M</td>
+                                <td class="p-3 text-right">3.53%</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-white">Creator Wallet #1 (Turbo)</td>
+                                <td class="p-3">
+                                    <a href="https://cardanoscan.io/address/addr1qy798xhqarpk86qp40qpzq0dv3s66u3caw3tk8r249mj5vqzxrdfv2sszp8thpunhsctx6czxzpxz86kap4pgptkdmvqhguc44" target="_blank" class="text-orange-400 hover:underline truncate block max-w-[180px]">addr1qy798x...hguc44</a>
+                                </td>
+                                <td class="p-3 text-right text-orange-400 font-bold">5.69M</td>
+                                <td class="p-3 text-right">0.57%</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-white">Treasury Holdings</td>
+                                <td class="p-3 text-gray-500 italic">Pending establishment</td>
+                                <td class="p-3 text-right text-emerald-400 font-bold">0</td>
+                                <td class="p-3 text-right">0.00%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Operational Flight Plan Roadmap (4 Phases) -->
     <section id="flight-plan" class="py-16 px-4 max-w-7xl mx-auto">
         <div class="text-center space-y-3 mb-12">
@@ -391,6 +488,24 @@
 
     <!-- Scripts -->
     <script>
+        let supplyChart;
+        function initChart() {
+            const ctx = document.getElementById('meepSupplyChart').getContext('2d');
+            supplyChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bonding Curve', 'LACE Wallet', 'Turbo Wallet', 'Community'],
+                    datasets: [{
+                        data: [875.54, 35.31, 5.69, 83.46],
+                        backgroundColor: ['#22d3ee', '#c5baff', '#fbbf24', '#64748b'],
+                        borderColor: '#070b14',
+                        borderWidth: 3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '72%' }
+            });
+        }
+
         function copyFullAssetID() {
             navigator.clipboard.writeText(document.getElementById('FullAssetIDText').innerText.trim());
             const btn = document.getElementById('copyBtnLabel');
@@ -428,7 +543,7 @@
             document.getElementById('meepOutput').value = (ada * 323914).toLocaleString();
         }
 
-        // Fetch live project stats from Netlify serverless function on page load
+        // Fetch live project telemetry & statistics from Netlify serverless function on page load
         async function loadLiveProjectStats() {
             try {
                 const response = await fetch('/.netlify/functions/get-stats');
@@ -438,12 +553,30 @@
                 if (holderEl && stats.holders) {
                     holderEl.innerText = stats.holders;
                 }
+
+                const totalTxEl = document.getElementById('meepLiveTotalTx');
+                if (totalTxEl && stats.totalTxCount) {
+                    totalTxEl.innerText = stats.totalTxCount;
+                }
+
+                const tickerContainer = document.getElementById('meepRecentTxFeed');
+                if (tickerContainer && stats.recentTxs && stats.recentTxs.length > 0) {
+                    tickerContainer.innerHTML = stats.recentTxs.map(tx => `
+                        <a href="https://cardanoscan.io/transaction/${tx.fullHash}" target="_blank" class="px-2.5 py-1 rounded-lg bg-snekdark-950 border border-white/10 hover:border-cyan-400 transition-colors text-white flex items-center gap-1.5 shrink-0">
+                            <span class="text-cyan-400">Tx: ${tx.hash}</span>
+                            <span class="text-gray-500 text-[10px]">${tx.time}</span>
+                        </a>
+                    `).join('');
+                }
             } catch (err) {
-                console.log("Using default statistic view.");
+                console.log("Using default telemetry view.");
             }
         }
 
-        window.addEventListener('DOMContentLoaded', loadLiveProjectStats);
+        window.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            loadLiveProjectStats();
+        });
     </script>
 </body>
 </html>
