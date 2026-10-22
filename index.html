@@ -145,7 +145,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-6">
-                <span>Total Txs: <strong id="meepLiveTotalTx" class="text-amber-400">142</strong></span>
+                <span>Total Txs: <strong id="meepLiveTotalTx" class="text-amber-400">0</strong></span>
                 <span>Tax: <strong class="text-emerald-400">0% Buy / Sell</strong></span>
                 <span>Supply: <strong class="text-cyan-400">1,000,000,000</strong></span>
             </div>
@@ -567,6 +567,8 @@
                             <span class="text-gray-500 text-[10px]">${tx.time}</span>
                         </a>
                     `).join('');
+                } else if (tickerContainer) {
+                    tickerContainer.innerHTML = `<span class="text-gray-500">Live mainnet feed active.</span>`;
                 }
             } catch (err) {
                 console.log("Using default telemetry view.");
