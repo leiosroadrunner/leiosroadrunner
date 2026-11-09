@@ -1,8 +1,0 @@
-/*
-  X-Frame-Options: DENY
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; script-src 'self' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'sha256-HijykYfWyj1FqDo/HRRYDIX86fHsExzwZ1sDJY8vkjU=' 'sha256-fWRaOPCFuA9ZW5OrUVu6kRxR08wichr7+NMOieJdgHg='; script-src-attr 'unsafe-hashes' 'sha256-r1W0lkAZKQgNRegM65RnJs5stk8Iqz66aWby0z9UAZw=' 'sha256-e7M4uadJs483DV0uHR2S2EzPQEWT7g4dvzs45D+fVk0=' 'sha256-I8+m4cN9xljoBWnPCDgWyb2af4chjMlgAjlnj5ZCSnY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; upgrade-insecure-requests
