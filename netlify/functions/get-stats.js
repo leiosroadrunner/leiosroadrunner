@@ -1,3 +1,16 @@
+const FETCH_TIMEOUT_MS = 6000;
+
+async function fetchWithTimeout(url, options = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        return response;
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
 exports.handler = async function(event, context) {
     const apiKey = process.env.CARDANOSCAN_API_KEY;
     const policyId = "2420237868d5c229c69592ed4282d17aa514bbbcac5d02bc0588e4884c65696f7320526f616472756e6e6572";
@@ -10,34 +23,57 @@ exports.handler = async function(event, context) {
         treasury: null 
     };
 
+    const headers = {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, s-maxage=60, max-age=60, stale-while-revalidate=30'
+    };
+
     try {
-        // Fetch asset summary for holders and total transaction count
-        const assetRes = await fetch(`https://api.cardanoscan.io/api/v1/asset?assetId=${policyId}`, {
+        // Fetch asset summary for holders and total transaction count with a timeout
+        const assetRes = await fetchWithTimeout(`https://api.cardanoscan.io/api/v1/asset?assetId=${policyId}`, {
             headers: { 'apiKey': apiKey || '' }
         });
-        const assetData = await assetRes.json();
-        const holders = assetData.holderCount || assetData.holders || 11;
-        const totalTxCount = assetData.txCount || assetData.transactionCount || 185;
+        
+        let holders = 11;
+        let totalTxCount = 185;
 
-        // Fetch recent transactions for the bonding curve contract address
-        const txRes = await fetch(`https://api.cardanoscan.io/api/v1/address/transaction?address=${bondingCurveAddress}&limit=5`, {
+        if (assetRes.ok) {
+            const assetData = await assetRes.json();
+            holders = assetData.holderCount || assetData.holders || 11;
+            totalTxCount = assetData.txCount || assetData.transactionCount || 185;
+        }
+
+        // Fetch recent transactions for the bonding curve contract address with a timeout
+        const txRes = await fetchWithTimeout(`https://api.cardanoscan.io/api/v1/address/transaction?address=${bondingCurveAddress}&limit=5`, {
             headers: { 'apiKey': apiKey || '' }
         });
-        const txData = await txRes.json();
+        
+        let recentTxs = [];
+        if (txRes.ok) {
+            const txData = await txRes.json();
+            const rawTxs = txData.transactions || txData.list || txData.data || [];
+            
+            // Hex validation regex for secure hash handling
+            const hexRegex = /^[a-fA-F0-9]{64}$/;
 
-        const rawTxs = txData.transactions || txData.list || txData.data || [];
-        const recentTxs = rawTxs.map(tx => {
-            const hash = tx.hash || tx.txId || "";
-            return {
-                hash: hash ? `${hash.substring(0, 6)}...${hash.substring(hash.length - 4)}` : "Live Tx",
-                time: tx.timestamp ? formatTimeAgo(tx.timestamp) : "Recent",
-                fullHash: hash || "#"
-            };
-        });
+            recentTxs = rawTxs
+                .filter(tx => {
+                    const hash = tx.hash || tx.txId || "";
+                    return hash && hexRegex.test(hash);
+                })
+                .map(tx => {
+                    const hash = tx.hash || tx.txId;
+                    return {
+                        hash: `${hash.substring(0, 6)}...${hash.substring(hash.length - 4)}`,
+                        time: tx.timestamp ? formatTimeAgo(tx.timestamp) : "Recent",
+                        fullHash: hash
+                    };
+                });
+        }
 
         return {
             statusCode: 200,
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify({
                 holders: Number(holders).toLocaleString(),
                 totalTxCount: Number(totalTxCount).toLocaleString(),
@@ -47,9 +83,10 @@ exports.handler = async function(event, context) {
             })
         };
     } catch (error) {
+        console.error("Telemetry function error:", error);
         return {
             statusCode: 200,
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify({
                 holders: "11",
                 totalTxCount: "185",
